@@ -16,17 +16,20 @@ public class Entity : MonoBehaviour
         get { return currentResource; }
     }
 
-    protected int level;
-    public int Level
-    {
-        get { return level; }
-    }
 
-    protected int experience;
+    private int experience;
     public int Experience
     {
         get { return experience; }
+        set { experience = value; }
     }
+
+    private int level;
+    public int Level
+    {
+        get { return level; }
+        set { level = value; }
+	}
 
     public Attributes currentAtt; // The entity's current total attributes
     public Attributes buffAtt; // Attribute changes that are added on from buffs/debuffs
@@ -35,21 +38,30 @@ public class Entity : MonoBehaviour
 
     public float minMovementSpeed = 0;
     public float maxMovementSpeed = 3;
-    public float minAttackSpeed = 0.1f;
-    public float maxAttackSpeed = 3f;
+    public float minAttackSpeed = 0.5f;
+    public float maxAttackSpeed = 2f;
 
     public AbilityManager abilityManager;
 
-    private Dictionary<equipSlots.slots, equipment> equippedEquip = new Dictionary<equipSlots.slots, equipment>();
+    private Dictionary<equipSlots.slots, equipment> equippedEquip;
+    public Dictionary<equipSlots.slots, equipment> EquippedEquip
+    {
+        get { return equippedEquip; }
+        set { equippedEquip = value; }
+    }
+
     private Inventory inventory;
 
     public Inventory Inventory { get { return inventory; } }
     public Dictionary<string, int> abilityIndexDict = new Dictionary<string, int>();
 
+    private Mesh _weaponMesh;
+
     public void Awake()
     {
         LoadInventory();
         abilityManager = gameObject.GetComponent<AbilityManager>();
+        equippedEquip = new Dictionary<equipSlots.slots, equipment>();
 
         equipAtt = new Attributes();
         buffAtt = new Attributes();
@@ -59,7 +71,7 @@ public class Entity : MonoBehaviour
         baseAtt.Resource = currentResource = 100;
         baseAtt.Power = 10;
         baseAtt.Defense = 10;
-        baseAtt.AttackSpeed = 1.0f;
+        baseAtt.AttackSpeed = 0f;
         baseAtt.MovementSpeed = 1.0f;
         level = 1;
         experience = 0;
@@ -74,6 +86,8 @@ public class Entity : MonoBehaviour
     public void Start()
     {
         UpdateCurrentAttributes();
+
+        // fix for "activated" cooldowns on start
     }
 
     public void UpdateCurrentAttributes()
@@ -96,6 +110,11 @@ public class Entity : MonoBehaviour
     public void ModifyHealth(float delta) 
     { 
         currentHP = Mathf.Clamp(currentHP + delta, 0, currentAtt.Health); 
+    }
+
+    public void ModifyHealthPercentage(float deltaPercent)
+    {
+        currentHP = Mathf.Clamp(currentHP + (currentAtt.Health / deltaPercent), 0, currentAtt.Health);
     }
 
     public void ModifyResource(float delta)
@@ -168,7 +187,12 @@ public class Entity : MonoBehaviour
                 abilityIndexDict[item.onhit] = 6;
             }
 
-            Inventory.Equip = item;
+            if (tag == "Player" && item.validSlot == equipSlots.slots.Main)
+            {
+                //GameObejct weaponModel = (Resources.Load(equipment.FILEPATH + item.modelname, typeof(GameObject)) as GameObject).GetComponent<MeshFilter>().mesh;          
+            }
+
+            inventory.RemoveItem(item);
             return true;
         }
     }
@@ -195,7 +219,7 @@ public class Entity : MonoBehaviour
          
             }
 
-            Inventory.Unequip = removed;
+            inventory.AddItem(removed);
             return true;
         }
         else

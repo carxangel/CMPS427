@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class FrozenOrb : Ability
 {
-    public FrozenOrb(AttackType attackType, DamageType damageType, float range, float angle, float cooldown, float damageMod, string id, string readable, GameObject particles)
-        : base(attackType, damageType, range, angle, cooldown, damageMod, id, readable, particles)
+    public FrozenOrb(AttackType attackType, DamageType damageType, float range, float angle, float cooldown, float damageMod, float resourceCost, string id, string readable, GameObject particles)
+        : base(attackType, damageType, range, angle, cooldown, damageMod, resourceCost, id, readable, particles)
     {
 
     }
@@ -20,7 +20,7 @@ public class FrozenOrb : Ability
         projectile.GetComponent<ProjectileBehaviour>().timeToActivate = 4.0f;
         projectile.GetComponent<ProjectileBehaviour>().abilityID = abilityID;
         projectile.GetComponent<ProjectileBehaviour>().ExplodesOnTimeout = false;
-        projectile.GetComponent<ProjectileBehaviour>().hascollided = true;
+        projectile.GetComponent<ProjectileBehaviour>().hasCollided = true;
 
 
         projectile.rigidbody.velocity = forward.normalized * 5.0f;
