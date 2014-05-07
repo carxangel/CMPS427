@@ -257,12 +257,12 @@ public class PlayerController : MonoBehaviour {
 
                     try
                     {
-                        _animationController.PlayerAttack(entity.abilityManager.abilities[1].AttackType, entity.EquippedEquip[equipSlots.slots.Main].equipmentType);
+                        _animationController.PlayerAttack(entity.abilityManager.abilities[1], entity.EquippedEquip[equipSlots.slots.Main].equipmentType);
                     }
 
                     catch
                     {
-                        _animationController.PlayerAttack(entity.abilityManager.abilities[1].AttackType, equipSlots.equipmentType.Sword);
+                        _animationController.PlayerAttack(entity.abilityManager.abilities[1], equipSlots.equipmentType.Sword);
                     }
 
                     if (entity.abilityManager.abilities[1].AttackType == AttackType.MELEE)
@@ -300,6 +300,15 @@ public class PlayerController : MonoBehaviour {
 
                         entity.abilityManager.abilities[1].SpawnProjectile(gameObject, rayCastTarget.point, gameObject, forward, entity.abilityManager.abilities[1].ID, true);
                     }
+
+                    else if (entity.abilityManager.abilities[1].AttackType == AttackType.GROUNDTARGET)
+                    {
+                        combatFSM.Attack(GameManager.GLOBAL_COOLDOWN);
+
+                        entity.abilityManager.abilities[1].AttackHandler(gameObject, rayCastTarget.point, entity, true);
+
+                    }
+
                     else
                     {
                         combatFSM.Attack(GameManager.GLOBAL_COOLDOWN);
@@ -334,12 +343,12 @@ public class PlayerController : MonoBehaviour {
 
                     try
                     {
-                        _animationController.PlayerAttack(entity.abilityManager.abilities[2].AttackType, entity.EquippedEquip[equipSlots.slots.Main].equipmentType);
+                        _animationController.PlayerAttack(entity.abilityManager.abilities[2], entity.EquippedEquip[equipSlots.slots.Main].equipmentType);
                     }
 
                     catch
                     {
-                        _animationController.PlayerAttack(entity.abilityManager.abilities[2].AttackType, equipSlots.equipmentType.Sword);
+                        _animationController.PlayerAttack(entity.abilityManager.abilities[2], equipSlots.equipmentType.Sword);
                     }
 
                     if (entity.CurrentResource >= entity.abilityManager.abilities[2].ResourceCost)
@@ -384,6 +393,15 @@ public class PlayerController : MonoBehaviour {
 
                             entity.abilityManager.abilities[2].SpawnProjectile(gameObject, rayCastTarget.point, gameObject, forward, entity.abilityManager.abilities[2].ID, true);
                         }
+
+                        else if (entity.abilityManager.abilities[2].AttackType == AttackType.GROUNDTARGET)
+                        {
+                            combatFSM.Attack(GameManager.GLOBAL_COOLDOWN);
+
+                            entity.abilityManager.abilities[2].AttackHandler(gameObject, rayCastTarget.point, entity, true);
+
+                        }
+
                         else
                         {
                             combatFSM.Attack(GameManager.GLOBAL_COOLDOWN);
@@ -421,12 +439,12 @@ public class PlayerController : MonoBehaviour {
 
                     try
                     {
-                        _animationController.PlayerAttack(entity.abilityManager.abilities[3].AttackType, entity.EquippedEquip[equipSlots.slots.Main].equipmentType);
+                        _animationController.PlayerAttack(entity.abilityManager.abilities[3], entity.EquippedEquip[equipSlots.slots.Main].equipmentType);
                     }
 
                     catch
                     {
-                        _animationController.PlayerAttack(entity.abilityManager.abilities[3].AttackType, equipSlots.equipmentType.Sword);
+                        _animationController.PlayerAttack(entity.abilityManager.abilities[3], equipSlots.equipmentType.Sword);
                     }
 
                     if (entity.CurrentResource >= entity.abilityManager.abilities[3].ResourceCost)
@@ -472,6 +490,13 @@ public class PlayerController : MonoBehaviour {
                             entity.abilityManager.abilities[3].SpawnProjectile(gameObject, rayCastTarget.point, gameObject, forward, entity.abilityManager.abilities[3].ID, true);
                         }
 
+                        else if (entity.abilityManager.abilities[3].AttackType == AttackType.GROUNDTARGET)
+                        {
+                            combatFSM.Attack(GameManager.GLOBAL_COOLDOWN);
+
+                            entity.abilityManager.abilities[3].AttackHandler(gameObject, rayCastTarget.point, entity, true);
+
+                        }
 
                         else
                         {
@@ -506,12 +531,12 @@ public class PlayerController : MonoBehaviour {
                     moveFSM.Turn(transform.position + forward, 5f);
                     try
                     {
-                        _animationController.PlayerAttack(entity.abilityManager.abilities[4].AttackType, entity.EquippedEquip[equipSlots.slots.Main].equipmentType);
+                        _animationController.PlayerAttack(entity.abilityManager.abilities[4], entity.EquippedEquip[equipSlots.slots.Main].equipmentType);
                     }
 
                     catch
                     {
-                        _animationController.PlayerAttack(entity.abilityManager.abilities[4].AttackType, equipSlots.equipmentType.Sword);
+                        _animationController.PlayerAttack(entity.abilityManager.abilities[4], equipSlots.equipmentType.Sword);
                     }
                     if (entity.CurrentResource >= entity.abilityManager.abilities[4].ResourceCost)
                     {
@@ -554,7 +579,14 @@ public class PlayerController : MonoBehaviour {
                             entity.abilityManager.abilities[4].SpawnProjectile(gameObject, rayCastTarget.point, gameObject, forward, entity.abilityManager.abilities[4].ID, true);
                         }
 
+                        else if (entity.abilityManager.abilities[4].AttackType == AttackType.GROUNDTARGET)
+                        {
+                            combatFSM.Attack(GameManager.GLOBAL_COOLDOWN);
 
+
+                            entity.abilityManager.abilities[4].AttackHandler(gameObject, rayCastTarget.point, entity, true);
+
+                        }
                         else
                         {
                             combatFSM.Attack(GameManager.GLOBAL_COOLDOWN);
@@ -589,12 +621,12 @@ public class PlayerController : MonoBehaviour {
 
                     try
                     {
-                        _animationController.PlayerAttack(entity.abilityManager.abilities[5].AttackType, entity.EquippedEquip[equipSlots.slots.Main].equipmentType);
+                        _animationController.PlayerAttack(entity.abilityManager.abilities[5], entity.EquippedEquip[equipSlots.slots.Main].equipmentType);
                     }
 
                     catch
                     {
-                        _animationController.PlayerAttack(entity.abilityManager.abilities[5].AttackType, equipSlots.equipmentType.Sword);
+                        _animationController.PlayerAttack(entity.abilityManager.abilities[5], equipSlots.equipmentType.Sword);
                     }
 
                     if (entity.CurrentResource >= entity.abilityManager.abilities[5].ResourceCost)
@@ -635,6 +667,16 @@ public class PlayerController : MonoBehaviour {
 
                             entity.abilityManager.abilities[5].SpawnProjectile(gameObject, rayCastTarget.point, gameObject, forward, entity.abilityManager.abilities[5].ID, true);
                         }
+
+                        else if (entity.abilityManager.abilities[5].AttackType == AttackType.GROUNDTARGET)
+                        {
+                            combatFSM.Attack(GameManager.GLOBAL_COOLDOWN);
+
+
+                            entity.abilityManager.abilities[5].AttackHandler(gameObject, rayCastTarget.point, entity, true);
+
+                        }
+
                         else
                         {
                             combatFSM.Attack(GameManager.GLOBAL_COOLDOWN);
@@ -653,16 +695,17 @@ public class PlayerController : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
+            entity.abilityManager.AddAbility(GameManager.Abilities["cleave"], 1);
+            entity.abilityManager.AddAbility(GameManager.Abilities["icebolt"], 2);
+            entity.abilityManager.AddAbility(GameManager.Abilities["dropdasteel"], 3);
+            entity.abilityManager.AddAbility(GameManager.Abilities["shieldbreaker"], 4);
+            entity.abilityManager.AddAbility(GameManager.Abilities["bladewaltz"], 5);
 
-            entity.abilityManager.AddAbility(GameManager.Abilities["cleave"], 2);
-            entity.abilityManager.AddAbility(GameManager.Abilities["frozenorb"], 3);
-            entity.abilityManager.AddAbility(GameManager.Abilities["aoefreeze"], 4);
-            entity.abilityManager.AddAbility(GameManager.Abilities["boomerangblade"], 5);
-
-            entity.abilityIndexDict["cleave"] = 2;
-            entity.abilityIndexDict["frozenorb"] = 3;
-            entity.abilityIndexDict["aoefreeze"] = 4;
-            entity.abilityIndexDict["boomerangblade"] = 5;
+            entity.abilityIndexDict["cleave"] = 1;
+            entity.abilityIndexDict["icebolt"] = 2;
+            entity.abilityIndexDict["dropdasteel"] = 3;
+            entity.abilityIndexDict["shieldbreaker"] = 4;
+            entity.abilityIndexDict["bladewaltz"] = 5;
         }
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
