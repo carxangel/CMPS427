@@ -21,7 +21,6 @@ public class CombatFSM : StateMachine
 	// Use this for initialization
 	void Start () 
     {
-
         SetupMachine(CombatStates.idle);
 
         HashSet<Enum> idleTransitions = new HashSet<Enum>();
@@ -46,8 +45,6 @@ public class CombatFSM : StateMachine
 
     public void Attack(float time)
     {
-        
-        
         attack = true;
         if (timeLocked == false)
         {

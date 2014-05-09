@@ -35,6 +35,7 @@ public class Entity : MonoBehaviour
     public Attributes buffAtt; // Attribute changes that are added on from buffs/debuffs
     public Attributes equipAtt; // Attribute changes that are added on from equipment stat changes
     public Attributes baseAtt; // Base attributes without any status effects or gear
+    private EntitySoundManager _soundManager;
 
     public float minMovementSpeed = 0;
     public float maxMovementSpeed = 3;
@@ -43,6 +44,7 @@ public class Entity : MonoBehaviour
 
     public AbilityManager abilityManager;
 
+    public Dictionary<string, int> abilityIndexDict = new Dictionary<string, int>();
     private Dictionary<equipSlots.slots, equipment> equippedEquip;
     public Dictionary<equipSlots.slots, equipment> EquippedEquip
     {
@@ -50,45 +52,40 @@ public class Entity : MonoBehaviour
         set { equippedEquip = value; }
     }
 
-    private Inventory inventory;
-
+    protected Inventory inventory;
     public Inventory Inventory { get { return inventory; } }
-    public Dictionary<string, int> abilityIndexDict = new Dictionary<string, int>();
 
     private Mesh _weaponMesh;
 
     public void Awake()
     {
-        LoadInventory();
+        // LoadInventory();
         abilityManager = gameObject.GetComponent<AbilityManager>();
         equippedEquip = new Dictionary<equipSlots.slots, equipment>();
+        _soundManager = GetComponent<EntitySoundManager>();
 
         equipAtt = new Attributes();
         buffAtt = new Attributes();
         baseAtt = new Attributes();
 
         baseAtt.Health = currentHP = 100;
-
         baseAtt.Resource = currentResource = 100;
+
         baseAtt.Power = 10;
         baseAtt.Defense = 10;
-        baseAtt.AttackSpeed = 0f;
+
+        baseAtt.AttackSpeed = 0;
         baseAtt.MovementSpeed = 1.0f;
+
         level = 1;
         experience = 0;
     }
 
-
     public void OnApplicationQuit() { }
 
-    /// <summary>
-    /// Creates the entity with a given set of base attributes,
-    /// </summary>
     public void Start()
     {
         UpdateCurrentAttributes();
-
-        // fix for "activated" cooldowns on start
     }
 
     public void UpdateCurrentAttributes()
@@ -112,7 +109,12 @@ public class Entity : MonoBehaviour
     /// </summary>
     /// <param name="value">Delta value to modify current health.</param>
     public void ModifyHealth(float delta) 
-    { 
+    {
+        if (delta < 0 && delta < -0.2f * currentAtt.Health)
+        {
+            _soundManager.GetHit();
+        }
+
         currentHP = Mathf.Clamp(currentHP + delta, 0, currentAtt.Health); 
     }
 
@@ -190,7 +192,6 @@ public class Entity : MonoBehaviour
                 abilityManager.AddAbility(GameManager.Abilities[item.onhit], 6);
                 abilityIndexDict[item.onhit] = 6;
             }
-
             if (tag == "Player" && item.validSlot == equipSlots.slots.Main)
             {
                 //GameObejct weaponModel = (Resources.Load(equipment.FILEPATH + item.modelname, typeof(GameObject)) as GameObject).GetComponent<MeshFilter>().mesh;          
@@ -222,7 +223,6 @@ public class Entity : MonoBehaviour
                 abilityManager.RemoveAbility(6);
          
             }
-
             inventory.AddItem(removed);
             return true;
         }
@@ -236,6 +236,7 @@ public class Entity : MonoBehaviour
     private void LoadInventory()
     {
         inventory = new Inventory();
+        Inventory.LoadItems();
     }
 
     /// <summary>

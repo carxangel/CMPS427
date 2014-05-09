@@ -43,6 +43,16 @@ public class MovementFSM : StateMachine
         get { return _navMeshAgent.destination; }
     }
 
+    public bool HasPath
+    {
+        get { return _navMeshAgent.hasPath; }
+    }
+
+    public bool PathPending
+    {
+        get { return _navMeshAgent.pathPending; }
+    }
+
     public float Height
     {
         get { return _navMeshAgent.height; }
@@ -120,18 +130,21 @@ public class MovementFSM : StateMachine
         AddTransitionsFrom(MoveStates.moveLocked, moveLockedTransitions);
 
         StartMachine(MoveStates.idle);
-
-        _navMeshAgent.updateRotation = false;
     }
 
     void Start()
     {
         _navMeshAgent.stoppingDistance = Radius * 1.1f;
-        _navMeshAgent.acceleration = 1000f;
-        _navMeshAgent.autoBraking = true;
-        _navMeshAgent.autoRepath = true;
-        _baseMovementSpeed = Mathf.Lerp(MAXIMUM_BASE_MOVEMENT_SPEED, MINIMUM_BASE_MOVEMENT_SPEED, Radius / MAXIMUM_RADIUS);
+        _navMeshAgent.updateRotation = false;
 
+        if (tag == "Player")
+        {
+            _navMeshAgent.avoidancePriority = 1;
+            _navMeshAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
+            _navMeshAgent.autoRepath = false;
+        }
+
+        _baseMovementSpeed = Mathf.Lerp(MAXIMUM_BASE_MOVEMENT_SPEED, MINIMUM_BASE_MOVEMENT_SPEED, Radius / MAXIMUM_RADIUS);
         UpdateMovementSpeed(1f);
     }
 
@@ -143,7 +156,7 @@ public class MovementFSM : StateMachine
         {
             _navMeshAgent.speed = _movementSpeed;
 
-            if (Vector3.Distance(targetPosition, transform.position) > 1)
+            if (CombatMath.DistanceGreaterThan(targetPosition, transform.position, 1))
             {
                 NavMeshHit navMeshHit;
 

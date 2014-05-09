@@ -63,6 +63,7 @@ public class AIController : StateMachine
     // Target variables
     private Dictionary<GameObject, Hostile> ThreatTable; // A dictionary of all threat targets
     private GameObject target; // The Target object that holds information about the current target
+    private EntitySoundManager _soundManager;
 
     private float wanderInterval; //Time between wanders in seconds
     private float wanderDistance; //Radius around the wanderer that it will travel
@@ -102,7 +103,8 @@ public class AIController : StateMachine
         AddTransitionsFrom(AIStates.reset, resetTransitions);
         AddTransitionsFrom(AIStates.wander, wanderTransitions);
 
-        StartMachine(AIStates.idle);     
+        StartMachine(AIStates.idle);
+        _soundManager = GetComponent<EntitySoundManager>();
     }
 
 	void Start() 
@@ -214,7 +216,7 @@ public class AIController : StateMachine
     {
         if (target != null)
         {
-            return Vector3.Distance(Group.transform.position, target.transform.position) < Group.ResetDistance;
+            return CombatMath.DistanceLessThan(Group.transform.position, target.transform.position, Group.ResetDistance);
         }
 
         else
@@ -345,6 +347,7 @@ public class AIController : StateMachine
     IEnumerator pursuit_EnterState()
     {
         _animationController.RunToMove();
+        _soundManager.Aggro();
         PursuitFSM.Pursue(target);
         yield break;
     }
@@ -390,13 +393,15 @@ public class AIController : StateMachine
     IEnumerator reset_EnterState()
     {
         PursuitFSM.StopPursuit();
+        _soundManager.Victor();
         MoveFSM.SetPath(localHomePosition);
+        
         yield break;
     }
 
     void reset_Update()
     {
-        if (Vector3.Distance(transform.position, localHomePosition) < MoveFSM.Radius)
+        if (CombatMath.DistanceLessThan(transform.position, localHomePosition, MoveFSM.Radius))
         {
             MoveFSM.Stop();
             Transition(AIStates.idle);
@@ -415,7 +420,7 @@ public class AIController : StateMachine
     IEnumerator dead_EnterState()
     {
         // Destroy(this.gameObject);
-
+        _soundManager.Death();
         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerEntity>().Experience += 25;
 
         PursuitFSM.StopPursuit();
