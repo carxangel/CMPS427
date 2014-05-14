@@ -32,6 +32,7 @@ public class LootTrigger : Trigger
 
         defaultShader = Shader.Find("Diffuse");
         highlight = Shader.Find("Outlined/Silhouetted Diffuse");
+        
     }
 
 	void Start() 
@@ -58,6 +59,7 @@ public class LootTrigger : Trigger
             }
         }
 
+        
 
 		if(isActive) 
         {
@@ -69,19 +71,18 @@ public class LootTrigger : Trigger
     {
         base.Update();
 
+        //Debug.Log("mouse over: "+uiController.PlayerController.MouseOverChest.ToString());
+
         if (inventory.IsEmpty() == true)
         {
             inventoryOpened = false;
-            GameObject.Destroy(gameObject);
-            
-        }
-
-        if (inventoryOpened == false)
-        {
             if (uiController.GuiState == UIController.States.LOOT)
             {
                 uiController.GuiState = UIController.States.INGAME;
             }
+
+            GameObject.Destroy(gameObject);
+            
         }
     }
 
@@ -99,10 +100,11 @@ public class LootTrigger : Trigger
         {
             uiController.GuiState = UIController.States.INGAME;
         }
+
         else if (uiController.GuiState == UIController.States.INGAME)
         {
-
             uiController.SetInventory(inventory);
+            
             uiController.GuiState = UIController.States.LOOT;
         }
         // maybe change object's material?
@@ -130,7 +132,7 @@ public class LootTrigger : Trigger
     void OnMouseEnter()
     {
         Debug.Log("entering");
-        triggerObject.renderer.material.shader = highlight;
+        //triggerObject.renderer.material.shader = highlight;
     }
 
     void OnMouseOver()
@@ -141,7 +143,7 @@ public class LootTrigger : Trigger
     void OnMouseExit()
     {
         Debug.Log("exiting");
-        triggerObject.renderer.material.shader = defaultShader;
+        //triggerObject.renderer.material.shader = defaultShader;
     }
 
     

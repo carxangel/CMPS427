@@ -44,11 +44,16 @@ public class PlayerController : MonoBehaviour {
         set { mouseOverGUI = value; }
     }
 
-    
+    private bool mouseOverChest;
+    public bool MouseOverChest
+    {
+        get { return mouseOverChest; }
+        set { mouseOverChest = value; }
+    }
 
     void Awake()
     {
-        
+        mouseOverChest = false;
 
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
@@ -90,6 +95,19 @@ public class PlayerController : MonoBehaviour {
       
 
         Debug.DrawRay(transform.position, transform.forward);
+        if (true)
+        {
+            int terrainMask = LayerMask.NameToLayer("Terrain");
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit target;
+            Physics.Raycast(ray, out target, Mathf.Infinity, 1 << terrainMask);
+            Vector3 vectorToMouse = target.point - gameObject.transform.position;
+            Vector3 normalizedVectorToMouse = new Vector3(vectorToMouse.x, gameObject.transform.forward.y, vectorToMouse.z);
+
+            Debug.DrawRay(gameObject.transform.position, normalizedVectorToMouse.normalized * 5.0f, Color.yellow);
+        }
+
         //Debug.DrawRay(transform.position, Rotations.RotateAboutY(new Vector3(transform.forward.x * 5.0f, transform.forward.y, transform.forward.z * 5.0f), -22.5f));
         //Debug.DrawRay(transform.position, Rotations.RotateAboutY(new Vector3(transform.forward.x * 5.0f, transform.forward.y, transform.forward.z * 5.0f), 22.5f));
         
@@ -233,7 +251,7 @@ public class PlayerController : MonoBehaviour {
 
         #region ability 1
 
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1) && mouseOverChest == false)
         {
 
             if (mouseOverGUI == true)
@@ -241,13 +259,16 @@ public class PlayerController : MonoBehaviour {
                 return;
             }
             
+
             if (entity.abilityManager.abilities[1] != null)
             {
                 if (combatFSM.IsIdle() == true && entity.abilityManager.activeCoolDowns[1] <= Time.time)
                 {
+                    int terrainMask = LayerMask.NameToLayer("Terrain");
+
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     RaycastHit rayCastTarget;
-                    Physics.Raycast(ray, out rayCastTarget, Mathf.Infinity);
+                    Physics.Raycast(ray, out rayCastTarget, Mathf.Infinity, 1 << terrainMask);
                     Vector3 vectorToMouse = rayCastTarget.point - transform.position;
                     Vector3 forward = new Vector3(vectorToMouse.x, transform.forward.y, vectorToMouse.z).normalized;
 
@@ -292,10 +313,6 @@ public class PlayerController : MonoBehaviour {
                         // if this is a projectile, attackhandler is only called when the projectile scores a hit.
                         // so, the keypress doesn't spawn the attackhandler, it simply inits the projectile object
 
-                        int terrainMask = LayerMask.NameToLayer("Terrain");
-
-                        int enemyMask = LayerMask.NameToLayer("Enemy");
-
                         entity.abilityManager.abilities[1].SpawnProjectile(gameObject, rayCastTarget.point, gameObject, forward, entity.abilityManager.abilities[1].ID, true);
                     }
 
@@ -331,9 +348,11 @@ public class PlayerController : MonoBehaviour {
             {
                 if (combatFSM.IsIdle() == true && entity.abilityManager.activeCoolDowns[2] <= Time.time)
                 {
+                    int terrainMask = LayerMask.NameToLayer("Terrain");
+
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     RaycastHit rayCastTarget;
-                    Physics.Raycast(ray, out rayCastTarget, Mathf.Infinity);
+                    Physics.Raycast(ray, out rayCastTarget, Mathf.Infinity, 1 << terrainMask);
                     Vector3 vectorToMouse = rayCastTarget.point - transform.position;
                     Vector3 forward = new Vector3(vectorToMouse.x, transform.forward.y, vectorToMouse.z).normalized;
 
@@ -384,11 +403,6 @@ public class PlayerController : MonoBehaviour {
                             // if this is a projectile, attackhandler is only called when the projectile scores a hit.
                             // so, the keypress doesn't spawn the attackhandler, it simply inits the projectile object
 
-                            int terrainMask = LayerMask.NameToLayer("Terrain");
-
-                            int enemyMask = LayerMask.NameToLayer("Enemy");
-
-
                             entity.abilityManager.abilities[2].SpawnProjectile(gameObject, rayCastTarget.point, gameObject, forward, entity.abilityManager.abilities[2].ID, true);
                         }
 
@@ -419,17 +433,17 @@ public class PlayerController : MonoBehaviour {
 
         #region ability 3
 
-        
-
         if (Input.GetKey(KeyCode.W))
         {
             if (entity.abilityManager.abilities[3] != null)
             {
                 if (combatFSM.IsIdle() == true && entity.abilityManager.activeCoolDowns[3] <= Time.time)
                 {
+                    int terrainMask = LayerMask.NameToLayer("Terrain");
+
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     RaycastHit rayCastTarget;
-                    Physics.Raycast(ray, out rayCastTarget, Mathf.Infinity);
+                    Physics.Raycast(ray, out rayCastTarget, Mathf.Infinity, 1 << terrainMask);
                     Vector3 vectorToMouse = rayCastTarget.point - transform.position;
                     Vector3 forward = new Vector3(vectorToMouse.x, transform.forward.y, vectorToMouse.z).normalized;
 
@@ -464,9 +478,6 @@ public class PlayerController : MonoBehaviour {
 
                             // if this is a projectile, attackhandler is only called when the projectile scores a hit.
                             // so, the keypress doesn't spawn the attackhandler, it simply inits the projectile object
-                            int terrainMask = LayerMask.NameToLayer("Terrain");
-
-                            int enemyMask = LayerMask.NameToLayer("Enemy");
 
                             entity.abilityManager.abilities[3].SpawnProjectile(gameObject, gameObject, forward, entity.abilityManager.abilities[3].ID, true);
                         }
@@ -479,10 +490,6 @@ public class PlayerController : MonoBehaviour {
 
                             // if this is a projectile, attackhandler is only called when the projectile scores a hit.
                             // so, the keypress doesn't spawn the attackhandler, it simply inits the projectile object
-
-                            int terrainMask = LayerMask.NameToLayer("Terrain");
-
-                            int enemyMask = LayerMask.NameToLayer("Enemy");
 
 
                             entity.abilityManager.abilities[3].SpawnProjectile(gameObject, rayCastTarget.point, gameObject, forward, entity.abilityManager.abilities[3].ID, true);
@@ -520,9 +527,11 @@ public class PlayerController : MonoBehaviour {
             {
                 if (combatFSM.IsIdle() == true && entity.abilityManager.activeCoolDowns[4] <= Time.time)
                 {
+                    int terrainMask = LayerMask.NameToLayer("Terrain");
+
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     RaycastHit rayCastTarget;
-                    Physics.Raycast(ray, out rayCastTarget, Mathf.Infinity);
+                    Physics.Raycast(ray, out rayCastTarget, Mathf.Infinity, 1 << terrainMask);
                     Vector3 vectorToMouse = rayCastTarget.point - transform.position;
                     Vector3 forward = new Vector3(vectorToMouse.x, transform.forward.y, vectorToMouse.z).normalized;
 
@@ -569,11 +578,6 @@ public class PlayerController : MonoBehaviour {
                             // so, the keypress doesn't spawn the attackhandler, it simply inits the projectile object
 
 
-                            int terrainMask = LayerMask.NameToLayer("Terrain");
-
-                            int enemyMask = LayerMask.NameToLayer("Enemy");
-
-
                             entity.abilityManager.abilities[4].SpawnProjectile(gameObject, rayCastTarget.point, gameObject, forward, entity.abilityManager.abilities[4].ID, true);
                         }
 
@@ -609,9 +613,11 @@ public class PlayerController : MonoBehaviour {
             {
                 if (combatFSM.IsIdle() == true && entity.abilityManager.activeCoolDowns[5] <= Time.time)
                 {
+                    int terrainMask = LayerMask.NameToLayer("Terrain");
+
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     RaycastHit rayCastTarget;
-                    Physics.Raycast(ray, out rayCastTarget, Mathf.Infinity);
+                    Physics.Raycast(ray, out rayCastTarget, Mathf.Infinity, 1 << terrainMask);
                     Vector3 vectorToMouse = rayCastTarget.point - transform.position;
                     Vector3 forward = new Vector3(vectorToMouse.x, transform.forward.y, vectorToMouse.z).normalized;
 
@@ -658,11 +664,6 @@ public class PlayerController : MonoBehaviour {
                             // if this is a projectile, attackhandler is only called when the projectile scores a hit.
                             // so, the keypress doesn't spawn the attackhandler, it simply inits the projectile object
 
-
-                            int terrainMask = LayerMask.NameToLayer("Terrain");
-
-                            int enemyMask = LayerMask.NameToLayer("Enemy");
-
                             entity.abilityManager.abilities[5].SpawnProjectile(gameObject, rayCastTarget.point, gameObject, forward, entity.abilityManager.abilities[5].ID, true);
                         }
 
@@ -693,33 +694,78 @@ public class PlayerController : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
+
+            LevelUp(true);
+            
+            /*
+            
             entity.abilityManager.AddAbility(GameManager.Abilities["cleave"], 1);
+
+            entity.abilityManager.AddAbility(GameManager.Abilities["dervish"], 1);
+
             entity.abilityManager.AddAbility(GameManager.Abilities["shadowfury"], 2);
             entity.abilityManager.AddAbility(GameManager.Abilities["dropdasteel"], 3);
             entity.abilityManager.AddAbility(GameManager.Abilities["shadowtrap"], 4);
             entity.abilityManager.AddAbility(GameManager.Abilities["deathanddecay"], 5);
 
-            entity.abilityIndexDict["cleave"] = 1;
+            entity.abilityIndexDict["dervish"] = 1;
             entity.abilityIndexDict["shadowfury"] = 2;
             entity.abilityIndexDict["dropdasteel"] = 3;
             entity.abilityIndexDict["shadowtrap"] = 4;
             entity.abilityIndexDict["deathanddecay"] = 5;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-
-            for (int i = 0; i<6; i++)
-            {
-                entity.removeEquipment((equipSlots.slots)i);
-                entity.addEquipment(gameManager.EquipmentFactory.randomEquipment(0, 1, (equipSlots.slots)i));
-            }
+             * 
+             */ 
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
+            talentManager.GiveTalentPoints(50);
+        }
 
-            entity.SetLevel(15);
-            Debug.Log(entity.Level + " is your new level!");
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            entity.GiveAttributePoints(25);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            entity.abilityManager.AddAbility(GameManager.Abilities["cleave"], 1);
+            entity.abilityManager.AddAbility(GameManager.Abilities["bladewaltz"], 2);
+            entity.abilityManager.AddAbility(GameManager.Abilities["fusrodah"], 3);
+            entity.abilityManager.AddAbility(GameManager.Abilities["whirlwind"], 4);
+            entity.abilityManager.AddAbility(GameManager.Abilities["blinkstrike"], 5);
+
+            entity.abilityIndexDict["cleave"] = 1;
+            entity.abilityIndexDict["bladewaltz"] = 2;
+            entity.abilityIndexDict["fusrodah"] = 3;
+            entity.abilityIndexDict["whirlwind"] = 4;
+            entity.abilityIndexDict["blinkstrike"] = 5;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            entity.abilityManager.AddAbility(GameManager.Abilities["fireball"], 1);
+            entity.abilityManager.AddAbility(GameManager.Abilities["shadowfury"], 2);
+            entity.abilityManager.AddAbility(GameManager.Abilities["flamestrike"], 3);
+            entity.abilityManager.AddAbility(GameManager.Abilities["shadowtrap"], 4);
+            entity.abilityManager.AddAbility(GameManager.Abilities["deathanddecay"], 5);
+
+            entity.abilityIndexDict["fireball"] = 1;
+            entity.abilityIndexDict["shadowfury"] = 2;
+            entity.abilityIndexDict["flamestrike"] = 3;
+            entity.abilityIndexDict["shadowtrap"] = 4;
+            entity.abilityIndexDict["deathanddecay"] = 5;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+
+            for (int i = 0; i<6; i++)
+            {
+
+                entity.addEquipment(gameManager.EquipmentFactory.randomEquipment(0, 1, (equipSlots.slots)i));
+                entity.removeEquipment((equipSlots.slots)i);
+            }
         }
 
         if(Input.GetKeyDown(KeyCode.M))
@@ -760,8 +806,8 @@ public class PlayerController : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.N))
         {
-            entity.ModifyHealth(entity.currentAtt.Health-entity.CurrentHP);
-            entity.ModifyResource(entity.currentAtt.Resource - entity.CurrentResource);
+            //entity.ModifyHealth(entity.currentAtt.Health-entity.CurrentHP);
+            //entity.ModifyResource(entity.currentAtt.Resource - entity.CurrentResource);
         }
 
         #region ABILITY TESTS
@@ -867,34 +913,72 @@ public class PlayerController : MonoBehaviour {
         
 
         //Check for level up
-        if (entity.Experience >= entity.NextLevelExperience && entity.Level < 19)
-        {
-            LevelUp();
-
-            
-            entity.Experience -= entity.NextLevelExperience;
-
-            
-
-            entity.NextLevelExperience *= 2;
-        }
-        else if (entity.Experience >= entity.NextLevelExperience && entity.Level < 19)
-        {
-            LevelUp();
-
-            entity.LevelCap = true;
-        }
+        LevelUp(false);
 
     }
 
-    void LevelUp()
+    void LevelUp(bool force)
     {
-        entity.Level++;
-        
-        //Play animation
 
-        talentManager.GiveTalentPoints(1);
-        entity.GiveAttributePoints(5);
+        if (force == true)
+        {
+            if(entity.Level < 19)
+            {
+                entity.Level++;
+
+                //Play animation
+
+                talentManager.GiveTalentPoints(1);
+                entity.GiveAttributePoints(5);
+
+                entity.NextLevelExperience *= 2;
+                entity.Experience = 0;
+            }
+            else if(entity.Level == 19)
+            {
+                entity.Level++;
+
+                //Play animation
+
+                talentManager.GiveTalentPoints(1);
+                entity.GiveAttributePoints(5);
+
+                entity.LevelCap = true;
+            }  
+            
+        }
+        else
+        {
+            if (entity.Experience >= entity.NextLevelExperience && entity.Level > 19)
+            {
+                entity.Level++;
+
+                //Play animation
+
+                talentManager.GiveTalentPoints(1);
+                entity.GiveAttributePoints(5);
+
+
+
+                entity.Experience -= entity.NextLevelExperience;
+
+
+
+                entity.NextLevelExperience *= 2;
+            }
+            else if (entity.Experience >= entity.NextLevelExperience && entity.Level == 19)
+            {
+                entity.Level++;
+
+                //Play animation
+
+                talentManager.GiveTalentPoints(1);
+                entity.GiveAttributePoints(5);
+
+                entity.LevelCap = true;
+            }
+        }
+
 
 
     }
