@@ -1,0 +1,135 @@
+fileFormatVersion: 2
+guid: 9a7b0d00cb04aa24a93eb5d495821e43
+TextureImporter:
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: 0
+    aniso: 1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: GUI_BitmapFont_Sm_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 24
+        height: 49
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: GUI_BitmapFont_Sm_1
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 0
+        width: 20
+        height: 49
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: GUI_BitmapFont_Sm_2
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 0
+        width: 23
+        height: 49
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: GUI_BitmapFont_Sm_3
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 0
+        width: 21
+        height: 49
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: GUI_BitmapFont_Sm_4
+      rect:
+        serializedVersion: 2
+        x: 89
+        y: 0
+        width: 30
+        height: 49
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: GUI_BitmapFont_Sm_5
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 0
+        width: 20
+        height: 49
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: GUI_BitmapFont_Sm_6
+      rect:
+        serializedVersion: 2
+        x: 139
+        y: 0
+        width: 26
+        height: 49
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: GUI_BitmapFont_Sm_7
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 0
+        width: 23
+        height: 49
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: GUI_BitmapFont_Sm_8
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 0
+        width: 21
+        height: 49
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: GUI_BitmapFont_Sm_9
+      rect:
+        serializedVersion: 2
+        x: 209
+        y: 0
+        width: 26
+        height: 49
+      alignment: 0
+      pivot: {x: .5, y: .5}
+  spritePackingTag: 
+  userData: 

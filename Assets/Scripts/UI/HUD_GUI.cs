@@ -4,11 +4,11 @@ using System.Collections;
 public class HUD_GUI : MonoBehaviour {
 
 	// Use this for initialization
-	public Texture HealthOverlay;
-	public Texture HealthLiquid;
-	public Texture BrightLiquid;
-	public Texture currentLiquid;
-	public Texture HealthGlare;
+	public Texture HealthOverlay;//
+	public Texture HealthLiquid;//
+	public Texture BrightLiquid;//
+	public Texture currentLiquid;//
+	public Texture HealthGlare;//
 	public Texture Ability1;
 	public Texture Ability2;
 	public Texture Ability3;
@@ -25,6 +25,8 @@ public class HUD_GUI : MonoBehaviour {
 	public GUIStyle AbiltyStyle;
 
 	public GUIStyle infoBoxStyle;
+
+    public Sprite attempt;
 
 	public Rect AbilitiesOuterBox;
 	public Rect AbilityOneBox;
